@@ -241,80 +241,78 @@ def qimen_ju_name_zhirun_raw(year, month, day, hour, minute):
 
 #奇門排局置閏，正授，有超神，有閏奇，有接氣
 def qimen_ju_name_zhirun(year, month, day, hour, minute):
-    try:
-        qdict = qimen_ju_name_zhirun_raw(year, month, day, hour, minute)
-        jQ = qdict.get("節氣")
-        d = qdict.get("距節氣差日數")
-        tgft = qdict.get("值符天干")
-        lunar_data = lunar_date_d(year, month, day)
-        lunar_month = lunar_data.get("農曆月")
-        solar_month = lunar_data.get("月")
-        lunar_day = lunar_data.get("日")
-        is_wuji = tgft in ["戊", "己", "庚", "辛", "壬", "癸"]
-        # d == 0 
-        if d == 0:
-            if lunar_month in ["腊月", "冬月"]:
-                return "{}{}".format(qdict.get("其他排局1" if lunar_month == "腊月" else "當前排局"), qdict.get("三元"))
-            return "{}{}".format(qdict.get("超神接氣正授排局" if solar_month > 9 else "當前排局"), qdict.get("三元"))
-        # d <= 6 and d != 0 
-        if d <= 6 and d>1:
-            if lunar_month in ["腊月", "冬月"]:
-                return "{}{}".format(qdict.get("其他排局1" if lunar_month == "腊月" else ("其他排局" if jQ == "冬至" else "當前排局")), qdict.get("三元"))
-            if solar_month >= 9:
-                if lunar_day < 15:
+    qdict = qimen_ju_name_zhirun_raw(year, month, day, hour, minute)
+    jQ = qdict.get("節氣")
+    d = qdict.get("距節氣差日數")
+    tgft = qdict.get("值符天干")
+    lunar_data = lunar_date_d(year, month, day)
+    lunar_month = lunar_data.get("農曆月")
+    solar_month = lunar_data.get("月")
+    lunar_day = lunar_data.get("日")
+    is_wuji = tgft in ["戊", "己", "庚", "辛", "壬", "癸"]
+    # d == 0 
+    if d == 0:
+        if lunar_month in ["腊月", "冬月"]:
+            return "{}{}".format(qdict.get("其他排局1" if lunar_month == "腊月" else "當前排局"), qdict.get("三元"))
+        return "{}{}".format(qdict.get("超神接氣正授排局" if solar_month > 9 else "當前排局"), qdict.get("三元"))
+    # d <= 6 and d != 0 
+    if d <= 6 and d>1:
+        if lunar_month in ["腊月", "冬月"]:
+            return "{}{}".format(qdict.get("其他排局1" if lunar_month == "腊月" else ("其他排局" if jQ == "冬至" else "當前排局")), qdict.get("三元"))
+        if solar_month >= 9:
+            if lunar_day < 15:
+                return "{}{}".format(qdict.get("其他排局1"), qdict.get("三元"))
+            return "{}{}".format(qdict.get("當前排局" if is_wuji else "其他排局"), qdict.get("三元"))
+        if lunar_month == "正月":
+            if lunar_day < 10 and not is_wuji:
+                return "{}{}".format(qdict.get("其他排局"), qdict.get("三元"))
+            if is_wuji:
+                if lunar_day < 20:
                     return "{}{}".format(qdict.get("其他排局1"), qdict.get("三元"))
-                return "{}{}".format(qdict.get("當前排局" if is_wuji else "其他排局"), qdict.get("三元"))
-            if lunar_month == "正月":
-                if lunar_day < 10 and not is_wuji:
+                if 20 < lunar_day <= 26:
                     return "{}{}".format(qdict.get("其他排局"), qdict.get("三元"))
-                if is_wuji:
-                    if lunar_day < 20:
-                        return "{}{}".format(qdict.get("其他排局1"), qdict.get("三元"))
-                    if 20 < lunar_day <= 26:
-                        return "{}{}".format(qdict.get("其他排局"), qdict.get("三元"))
-                    return "{}{}".format(qdict.get("其他排局1"), qdict.get("三元"))
-            if lunar_month not in  ["腊月", "冬月", "正月"]:
-                if lunar_day < 15:
-                    return "{}{}".format(qdict.get("當前排局"), qdict.get("三元"))
-            if lunar_day >= 15:
                 return "{}{}".format(qdict.get("其他排局1"), qdict.get("三元"))
-            return "{}{}".format(qdict.get("超神接氣正授排局"), qdict.get("三元"))
-        # d > 6 and d <= 9 
-        if d <= 9 and d > 1:
-            if lunar_month in ["腊月", "冬月"]:
-                return "{}{}".format(qdict.get("當前排局" if lunar_month == "腊月" else "其他排局1"), qdict.get("三元"))
-            if lunar_month == "正月":
-                return "{}{}".format(qdict.get("其他排局1" if solar_month <= 9 and lunar_day >= 15 else "其他排局1" if is_wuji else "超神接氣正授排局" ), qdict.get("三元"))
-            if solar_month <= 6:
-                if lunar_day <= 10:
-                    return "{}{}".format(qdict.get("其他排局1"), qdict.get("三元"))
-                if is_wuji:
-                    return "{}{}".format(qdict.get("超神接氣正授排局" if lunar_day < 20 else "其他排局1"), qdict.get("三元"))
+        if lunar_month not in  ["腊月", "冬月", "正月"]:
+            if lunar_day < 15:
                 return "{}{}".format(qdict.get("當前排局"), qdict.get("三元"))
-            if solar_month <= 9:
-                if lunar_day < 15:
-                    return "{}{}".format(qdict.get("超神接氣正授排局"), qdict.get("三元"))
-                return "{}{}".format(qdict.get("其他排局1" if is_wuji or lunar_day >= 20 else "當前排局"), qdict.get("三元"))
-            return "{}{}".format(qdict.get("超神接氣正授排局"), qdict.get("三元"))
-        # d >= 10 and d <= 15 
-        if d <= 15 and d > 1:
-            if lunar_month in ["腊月", "冬月"]:
-                return "{}{}".format(qdict.get("其他排局1" if lunar_month == "腊月" or jQ != "冬至" else ("其他排局1" if d <= 12 else "當前排局")), qdict.get("三元"))
-            if solar_month > 9:
+        if lunar_day >= 15:
+            return "{}{}".format(qdict.get("其他排局1"), qdict.get("三元"))
+        return "{}{}".format(qdict.get("超神接氣正授排局"), qdict.get("三元"))
+    # d > 6 and d <= 9 
+    if d <= 9 and d > 1:
+        if lunar_month in ["腊月", "冬月"]:
+            return "{}{}".format(qdict.get("當前排局" if lunar_month == "腊月" else "其他排局1"), qdict.get("三元"))
+        if lunar_month == "正月":
+            return "{}{}".format(qdict.get("其他排局1" if solar_month <= 9 and lunar_day >= 15 else "其他排局1" if is_wuji else "超神接氣正授排局" ), qdict.get("三元"))
+        if solar_month <= 6:
+            if lunar_day <= 10:
                 return "{}{}".format(qdict.get("其他排局1"), qdict.get("三元"))
-            if lunar_month == "正月":
-                return "{}{}".format(qdict.get("當前排局" if lunar_day >= 15 else "當前排局"), qdict.get("三元"))
-            if lunar_month not in ["正月","腊月", "冬月"]:
-                return "{}{}".format(qdict.get("當前排局" if lunar_day < 15 else "當前排局"), qdict.get("三元"))
+            if is_wuji:
+                return "{}{}".format(qdict.get("超神接氣正授排局" if lunar_day < 20 else "其他排局1"), qdict.get("三元"))
+            return "{}{}".format(qdict.get("當前排局"), qdict.get("三元"))
+        if solar_month <= 9:
             if lunar_day < 15:
                 return "{}{}".format(qdict.get("超神接氣正授排局"), qdict.get("三元"))
+            return "{}{}".format(qdict.get("其他排局1" if is_wuji or lunar_day >= 20 else "當前排局"), qdict.get("三元"))
+        return "{}{}".format(qdict.get("超神接氣正授排局"), qdict.get("三元"))
+    # d >= 10 and d <= 15 
+    if d <= 15 and d > 1:
+        if lunar_month in ["腊月", "冬月"]:
+            return "{}{}".format(qdict.get("其他排局1" if lunar_month == "腊月" or jQ != "冬至" else ("其他排局1" if d <= 12 else "當前排局")), qdict.get("三元"))
+        if solar_month > 9:
+            return "{}{}".format(qdict.get("其他排局1"), qdict.get("三元"))
+        if lunar_month == "正月":
+            return "{}{}".format(qdict.get("當前排局" if lunar_day >= 15 else "當前排局"), qdict.get("三元"))
+        if lunar_month not in ["正月","腊月", "冬月"]:
+            return "{}{}".format(qdict.get("當前排局" if lunar_day < 15 else "當前排局"), qdict.get("三元"))
+        if lunar_day < 15:
             return "{}{}".format(qdict.get("超神接氣正授排局"), qdict.get("三元"))
-        # Default case
-
-        if d < 0:
-            return "{}{}".format(qdict.get("超神接氣正授排局"), qdict.get("三元"))
-    except Exception as e:
-        raise ValueError(f"Error in qimen_ju_name_zhirun for {year}-{month}-{day} {hour}:{minute}: {str(e)}")
+        return "{}{}".format(qdict.get("超神接氣正授排局"), qdict.get("三元"))
+    # Default case
+    if d < 0:
+        return "{}{}".format(qdict.get("超神接氣正授排局"), qdict.get("三元"))
+    else:
+        return "{}{}".format(qdict.get("當前排局"), qdict.get("三元"))
 
         
 #奇門排局刻家
@@ -808,10 +806,10 @@ def pan_sky_minute(year, month, day, hour, minute ):
 
 if __name__ == '__main__':
     year = 2025
-    month = 8
-    day = 27
-    hour = 8
-    minute = 33
+    month = 10
+    day = 24
+    hour = 13
+    minute = 0
     #print(liujiashun_dict())
     print(qimen_ju_name_zhirun_raw(year, month, day, hour, minute))
     print(f"{year}-{month}-{day} {hour}:{minute}")
