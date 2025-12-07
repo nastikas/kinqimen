@@ -123,7 +123,6 @@ with pan:
     output2 = st.empty()
 
     with st_capture(output2.code):
-        # if not manual:
         qtext = None
         if manual:
             gz = config.gangzhi(y,m,d,h,mintue)
