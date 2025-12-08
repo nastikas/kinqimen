@@ -72,12 +72,11 @@ def render_pan(y, m, d, h, minute, is_shijia=True):
 
     # 輸出文字盤面
     print(f"{'時家奇門' if is_shijia else '刻家奇門'} | {q['排盤方式']}")
-    print(f"{y}年{m}月{d}日{h}時{minute}分\n")
-    print(f"{q['干支']} | {q['排局']} | 節氣：{jq} | "
-          f"值符星宮：天{q['值符值使']['值符星宮'][1]}宮 | "
-          f"值使門宮：{q['值符值使']['值使門宮'][0]門{q['值符值使']['值使門宮'][1]}宮")
-    print(f"農曆月：{config.lunar_date_d(y,m,d)['農曆月']} | "
-          f"節氣日數差距：{config.qimen_ju_name_zhirun_raw(y,m,d,h,minute)['距節氣差日數']}天\n")
+    print(f"{y}年{m}月{d}日 {h}時{minute}分\n")
+    print(f"{q['干支']} | {q['排局']} | 節氣：{jq}")
+    print(f"值符星宮：天{zf_xing}宮　　值使門宮：{zm_men}門{zm_gong}宮")
+    print(f"農曆月：{config.lunar_date_d(y,m,d)['農曆月']}  |  "
+          f"距節氣：{config.qimen_ju_name_zhirun_raw(y,m,d,h,minute)['距節氣差日數']}天\n")
 
     # 九宮格 ASCII 藝術（共用）
     lines = [
@@ -122,3 +121,4 @@ with pan:
                 render_pan(pp_date.year, pp_date.month, pp_date.day, h, mnt, is_shijia)
             except:
                 st.error("時間格式錯誤，請輸入如 18:30")
+
