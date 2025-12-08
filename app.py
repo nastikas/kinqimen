@@ -69,7 +69,9 @@ def render_pan(y, m, d, h, minute, is_shijia=True):
     star = [q["星"][k] for k in eg]
     mid = q["地盤"]["中"]
     es, egod = lr["地轉天盤"], lr["地轉天將"]
-
+    zf_xing = q["值符值使"]["值符星宮"][1]
+    zm_men  = q["值符值使"]["值使門宮"][0]
+    zm_gong = q["值符值使"]["值使門宮"][1]
     # 輸出文字盤面
     print(f"{'時家奇門' if is_shijia else '刻家奇門'} | {q['排盤方式']}")
     print(f"{y}年{m}月{d}日 {h}時{minute}分\n")
@@ -121,4 +123,5 @@ with pan:
                 render_pan(pp_date.year, pp_date.month, pp_date.day, h, mnt, is_shijia)
             except:
                 st.error("時間格式錯誤，請輸入如 18:30")
+
 
